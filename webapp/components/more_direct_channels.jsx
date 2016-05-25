@@ -12,6 +12,7 @@ import {FormattedMessage} from 'react-intl';
 import {browserHistory} from 'react-router';
 import SpinnerButton from 'components/spinner_button.jsx';
 import LoadingScreen from 'components/loading_screen.jsx';
+import ReactDOM from 'react-dom';
 
 import React from 'react';
 
@@ -36,6 +37,11 @@ export default class MoreDirectChannels extends React.Component {
     componentDidMount() {
         UserStore.addDmListChangeListener(this.handleUserChange);
         TeamStore.addChangeListener(this.onTeamChange);
+
+        var self = this;
+        $(ReactDOM.findDOMNode(this.refs.modal)).on('shown.bs.modal', () => {
+            self.refs.filter.focus();
+        });
     }
 
     componentWillUnmount() {
@@ -161,6 +167,7 @@ export default class MoreDirectChannels extends React.Component {
         return (
             <Modal
                 dialogClassName='more-modal more-direct-channels'
+                ref='modal'
                 show={this.props.show}
                 onHide={this.handleHide}
                 onEnter={this.handleOnEnter}
